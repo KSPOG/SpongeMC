@@ -39,6 +39,13 @@ import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.ban.BanService;
+
+import org.spongepowered.api.util.ban.Ban;
+import org.spongepowered.api.util.ban.BanTypes;
+import org.spongepowered.api.service.ban.Ban;
+import org.spongepowered.api.service.ban.BanService;
+import org.spongepowered.api.service.ban.BanTypes;
+
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
@@ -271,10 +278,20 @@ public final class BotanyBayPlugin {
 
             if (banService.isBanned(suspect.getProfile())) {
                 src.sendMessage(Text.of(TextColors.YELLOW, "Suspect is already banned. Adding to the queue regardless."));
+
             } else if (!issueBanCommand(banService, suspect, accusation)) {
                 src.sendMessage(Text.of(TextColors.RED,
                         "Unable to ban the suspect automatically. Check the server console for details."));
                 return CommandResult.empty();
+
+            } else {
+                final Ban ban = Ban.builder()
+                        .type(BanTypes.PROFILE)
+                        .profile(suspect.getProfile())
+                        .reason(Text.of(accusation))
+                        .build();
+                banService.addBan(ban);
+
             }
 
             suspect.getPlayer().ifPresent(player -> player.kick(Text.of(TextColors.DARK_RED,
@@ -311,6 +328,7 @@ public final class BotanyBayPlugin {
             return CommandResult.success();
         };
     }
+
 
     private boolean issueBanCommand(final BanService banService, final User suspect, final String accusation) {
         final StringBuilder command = new StringBuilder("ban ")
