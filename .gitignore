@@ -1,0 +1,19 @@
+# Gradle
+.gradle/
+build/
+out/
+# gradle wrapper jar fetched on demand
+gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ
+.idea/
+*.iml
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Mac/Linux/Windows
+.DS_Store
+Thumbs.db
