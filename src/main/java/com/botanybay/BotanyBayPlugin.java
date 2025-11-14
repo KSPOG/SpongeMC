@@ -3,6 +3,9 @@ package com.botanybay;
 import com.google.inject.Inject;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -10,6 +13,7 @@ import com.flowpowered.math.vector.Vector3i;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,6 +56,8 @@ import org.spongepowered.api.plugin.PluginContainer;
 import org.spongepowered.api.profile.GameProfile;
 import org.spongepowered.api.scheduler.ScheduledTask;
 import org.spongepowered.api.scheduler.Task;
+import org.spongepowered.api.service.ban.Ban;
+import org.spongepowered.api.service.ban.BanTypes;
 import org.spongepowered.api.util.ban.Ban;
 import org.spongepowered.api.util.ban.BanTypes;
 import org.spongepowered.api.world.server.ServerLocation;
@@ -222,7 +228,7 @@ public final class BotanyBayPlugin {
                             .color(NamedTextColor.YELLOW)
                             .append(Component.text("Usage: /botanybay set <npc|zone|bansign>"))
                             .build());
-                  
+                
     private TrialSession activeTrial;
     private Task conclusionTask;
     private final Deque<QueuedSuspect> trialQueue = new ArrayDeque<>();
@@ -642,6 +648,7 @@ public final class BotanyBayPlugin {
             this.conclusionTask.cancel();
             this.conclusionTask = null;
 
+
     private CommandExecutor startTrialExecutor() {
         return (src, args) -> {
             if (activeTrial != null) {
@@ -889,7 +896,6 @@ public final class BotanyBayPlugin {
         if (conclusionTask != null) {
             conclusionTask.cancel();
             conclusionTask = null;
-
         }
     }
 
@@ -931,6 +937,7 @@ public final class BotanyBayPlugin {
                 break;
         }
         Sponge.server().broadcastAudience().sendMessage(verdict);
+
         if (activeTrial == null) {
             return;
         }
@@ -1085,6 +1092,7 @@ public final class BotanyBayPlugin {
 
         final ZoneSelection selection = this.pendingZoneSelections.get(player.uniqueId());
 
+
     private CommandExecutor setNpcExecutor() {
         return (src, args) -> {
             if (!(src instanceof Player)) {
@@ -1227,6 +1235,9 @@ public final class BotanyBayPlugin {
         if (world.spawnEntity(humanoid)) {
             this.npcEntityId = humanoid.uniqueId();
         } else {
+
+            this.logger.warn("Unable to spawn Botany Bay NPC for {} at {}.", suspect.name(), position);
+
             this.logger.warn("Unable to spawn Botany Bay NPC for {} at {}.", suspect.name(), position)
         if (!selection.getWorldId().equals(location.getExtent().getUniqueId())) {
             player.sendMessage(Text.of(TextColors.RED,
@@ -1348,6 +1359,7 @@ public final class BotanyBayPlugin {
 
         signOptional.get().offer(Keys.SIGN_LINES, lines);
 
+
         final List<String> accusationLines = wrapAccusationLines(accusation);
         final String nameLine = trimForSign(suspectName);
         final Text lineOne = Text.of(TextColors.DARK_RED, nameLine);
@@ -1362,7 +1374,9 @@ public final class BotanyBayPlugin {
 
     private void resetBanSignMessage() {
         final Optional<Sign> signOptional = this.getBanSign();
+
         final Optional<Sign> signOptional = getBanSign();
+
         if (!signOptional.isPresent()) {
             return;
         }
@@ -1372,11 +1386,13 @@ public final class BotanyBayPlugin {
                 Component.text("Awaiting", NamedTextColor.YELLOW),
                 Component.text("Accused", NamedTextColor.YELLOW),
                 Component.text("")
+
         final List<Text> defaultLines = Arrays.asList(
                 Text.of(TextColors.DARK_GREEN, "Botany Bay"),
                 Text.of(TextColors.YELLOW, "Awaiting"),
                 Text.of(TextColors.YELLOW, "Accused"),
                 Text.of("")
+
         );
         signOptional.get().offer(Keys.SIGN_LINES, defaultLines);
     }
@@ -1391,6 +1407,7 @@ public final class BotanyBayPlugin {
         if (!signOptional.isPresent()) {
             this.logger.warn("Configured Botany Bay ban sign is missing at {}",
                     this.formatBlockPosition(location.blockPosition()));
+
         if (!banSignLocation.isPresent()) {
             return Optional.empty();
         }
@@ -1399,6 +1416,7 @@ public final class BotanyBayPlugin {
         final Optional<Sign> signOptional = location.getTileEntity(Sign.class);
         if (!signOptional.isPresent()) {
             logger.warn("Configured Botany Bay ban sign is missing at {}", formatBlockPosition(location.getBlockPosition()));
+
         }
         return signOptional;
     }
@@ -1407,7 +1425,9 @@ public final class BotanyBayPlugin {
         final String sanitized = Optional.ofNullable(accusation).orElse("").trim();
         if (sanitized.isEmpty()) {
             return List.of("");
+
             return Arrays.asList("");
+
         }
 
         final List<String> lines = new ArrayList<>();
@@ -1473,6 +1493,7 @@ public final class BotanyBayPlugin {
         }
         final Iterator<QueuedSuspect> iterator = this.trialQueue.iterator();
 
+
     private Text formatVoteOptions() {
         final Text execute = Text.builder()
                 .append(PunishmentOption.EXECUTE.toText())
@@ -1508,6 +1529,7 @@ public final class BotanyBayPlugin {
             return;
         }
         final Iterator<QueuedSuspect> iterator = trialQueue.iterator();
+
         while (iterator.hasNext()) {
             if (iterator.next().getSuspectId().equals(suspectId)) {
                 iterator.remove();
@@ -1527,7 +1549,7 @@ public final class BotanyBayPlugin {
         }
         return Component.text("Console", NamedTextColor.WHITE);
     }
-      
+
     private static final class ZoneSelection {
         private final UUID worldId;
         private Vector3i firstCorner;
@@ -1536,6 +1558,7 @@ public final class BotanyBayPlugin {
         private ZoneSelection(final UUID worldId) {
             this.worldId = worldId;
         }
+
 
 
         private UUID getWorldId() {

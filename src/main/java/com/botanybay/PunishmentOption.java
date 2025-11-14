@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
@@ -45,6 +44,7 @@ public enum PunishmentOption {
             default:
                 return Component.text("Release", NamedTextColor.GREEN);
 
+
         return id;
     }
 
@@ -60,6 +60,7 @@ public enum PunishmentOption {
                 return Text.of(TextColors.GOLD, "Pillory");
             default:
                 return Text.of(TextColors.GREEN, "Release");
+
 
         }
     }
