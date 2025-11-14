@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
+
 
 /**
  * Represents the punishments available during a Botany Bay trial.
@@ -24,6 +27,7 @@ public enum PunishmentOption {
     }
 
     public String getId() {
+
         return this.id;
     }
 
@@ -39,6 +43,25 @@ public enum PunishmentOption {
                 return Component.text("Pillory", NamedTextColor.GOLD);
             default:
                 return Component.text("Release", NamedTextColor.GREEN);
+
+
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Text toText() {
+        switch (this) {
+            case EXECUTE:
+                return Text.of(TextColors.DARK_RED, "Execution");
+            case PILLORY:
+                return Text.of(TextColors.GOLD, "Pillory");
+            default:
+                return Text.of(TextColors.GREEN, "Release");
+
+
         }
     }
 
