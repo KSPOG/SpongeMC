@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "botanybay",
+    "name": "Botany Bay",
+    "description": "Host Botany Bay style public trials for suspected botters.",
+    "version": "1.0.0",
+    "mcversion": "1.20.0",
+    "acceptedMinecraftVersions": "[1.20,1.21.1]",
+    "url": "https://github.com/example/botanybay",
+    "authorList": ["Botany Bay Contributors"],
+    "credits": "Inspired by RuneScape's Botany Bay event",
+    "dependencies": [
+      "required-after:spongeapi@[12.0.0,13.0.0)"
+    ]
+  }
+]
