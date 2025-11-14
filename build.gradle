@@ -5,10 +5,18 @@ plugins {
 group = 'com.botanybay'
 version = '1.0.0'
 
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
+
+def targetJavaVersion = JavaVersion.VERSION_1_8
+
+java {
+    sourceCompatibility = targetJavaVersion
+    targetCompatibility = targetJavaVersion
+
 }
 
 repositories {
@@ -21,6 +29,9 @@ repositories {
 
 dependencies {
     compileOnly 'org.spongepowered:spongeapi:12.0.0'
+
+    compileOnly 'org.spongepowered:spongeapi:7.4.0'
+
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -29,6 +40,12 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 jar {
+
+    options.release = 8
+}
+
+tasks.jar {
+
     archiveBaseName.set('BotanyBay')
     manifest {
         attributes(

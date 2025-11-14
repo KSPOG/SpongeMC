@@ -22,6 +22,7 @@ or by clicking the interactive chat prompts.
 - Condemned suspects reappear as frozen NPCs using their skin at the configured spawn point.
 - Votes are only accepted from players standing inside the defined Botany Bay arena.
 
+
 ## Requirements
 
 - Java 17 runtime for building and running the plugin.
