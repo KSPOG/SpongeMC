@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.botanybay'
+version = '1.0.0'
+
+def targetJavaVersion = JavaVersion.VERSION_1_8
+
+java {
+    sourceCompatibility = targetJavaVersion
+    targetCompatibility = targetJavaVersion
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'sponge'
+        url = uri('https://repo.spongepowered.org/maven')
+    }
+}
+
+dependencies {
+    compileOnly 'org.spongepowered:spongeapi:7.4.0'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 8
+}
+
+tasks.jar {
+    archiveBaseName.set('BotanyBay')
+    manifest {
+        attributes(
+                'Specification-Title': 'Botany Bay',
+                'Specification-Version': project.version,
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+        )
+    }
+}
